@@ -1,0 +1,2 @@
+- I should probably have made a database table to hold the countries. So can just use the country_id for the buildings.
+- Decided to use fname and sname instead of just full_name. Then just concat them together. Always figured this way it better, so easier to search users if want to search by their surname.

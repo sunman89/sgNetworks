@@ -17,34 +17,42 @@ $data = $doorEntry->formatAll($_REQUEST); // Clean up the url params.
 switch($_REQUEST['action'])
 {
     case 'enter-building':
+        // Main action to just return the credentials in a JSON format. As long as have a cn="" in the URL.
         $entry = $doorEntry->getEntryDetails($data);
-        return json_encode($entry);
+        echo json_encode($entry);
         exit();
-        /**
-         * get the cn= and test that in the db. Return the json_encoded data.
-         */
     break;
 
     case 'enter-building-test':
-        $data['cn'] = '142594708f3a5a3ac2980914a0fc954f'; // Test purposes
+        $data['cn'] = '142594708f3a5a3ac2980914a0fc954f'; // Test purposes exact match
+        // $data['cn'] = '142594708f3a5a3ac2980914a0fc954fgdsfh'; // Too long number
+        // $data['cn'] = '142594708f3a5a3'; // Too short number
         $doorEntry->getEntryDetails($data);
         echo json_encode(['full_name' => $doorEntry->getFullName(), 'department' => $doorEntry->getDepartments()]);
         exit();
     break;
 
-    // Put use cases for adding users. Have add employee and then just pass in values, so can do it from the class.
-
-    case 'upload-image':
-        // Try to upload the image to the proper directory.
-        $failed = $landing->addImageAndText($data);
-        // If it failed, then pass the message through to display it.
-        header('Location: landing.php?'.(($failed) ? 'failed='.$failed . '&image_text='.$data['image_text'] :'' ));
+    case 'add-employee-test':
+        $added = $doorEntry->addEmployee();
+        echo $added;
+        exit();
     break;
 
-    case 'display':
-        // Page to display the actual image.
-        $image      = $landing->getImageToDisplay($data);
-        $layout     = 'display-image.inc.php';
+    case 'add-employee-departments-test':
+        $data['id'] = 2; // Can change this to be any employee taht exists
+        $added = $doorEntry->addDepartmentsToEmployee($data['id']);
+        echo $added;
+        exit();
+    break;
+
+    case 'all-employee-data-test':
+        $data['cn'] = '142594708f3a5a3ac2980914a0fc954f'; // Test purposes
+        // $data['cn'] = '142594708f3a5a3ac2980914a0fc954g'; // Test purposes
+        $result = $doorEntry->getAllDataForEmployee($data['cn']);
+        echo '<pre>';
+        print_r($result);
+        echo '</pre>';
+        exit();
     break;
 
     /*
