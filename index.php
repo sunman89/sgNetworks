@@ -19,7 +19,7 @@ switch($_REQUEST['action'])
     case 'enter-building':
         // Main action to just return the credentials in a JSON format. As long as have a cn="" in the URL.
         $entry = $doorEntry->getEntryDetails($data);
-        echo json_encode($entry);
+        echo json_encode(['full_name' => $doorEntry->getFullName(), 'department' => $doorEntry->getDepartments()]);
         exit();
     break;
 
@@ -39,7 +39,7 @@ switch($_REQUEST['action'])
     break;
 
     case 'add-employee-departments-test':
-        $data['id'] = 2; // Can change this to be any employee taht exists
+        // $data['id'] = 7; // Can change this to be any employee that exists
         $added = $doorEntry->addDepartmentsToEmployee($data['id']);
         echo $added;
         exit();
